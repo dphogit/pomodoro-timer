@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+// Variables
+$font: "Raleway", sans-serif;
+
+// Layout + Styles
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-family: $font;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1rem 0;
+  .row-block {
+    padding: 0 2rem;
+  }
+}
+
+#timer-label {
+  border: 2px solid;
+}
+
+.length-setted {
+  padding: 0 1rem;
+}
