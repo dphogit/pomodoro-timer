@@ -1,6 +1,18 @@
 import React from "react";
 import "./pomodoro.scss";
 
+// TODO Add timer countdown features
+// - Find a way for when the play/pause button is clicked it will start counting down from the amount of seconds left. Use Date module.
+
+// TODO Add break feature
+// - When timer hits 1:00 it should have a "flashing" style
+// - When timer hits 00:00 switch mode from session to break which lasts the set break length amount of time (convert from mins -> secs)
+// Play beeping sounds at the appropriate times
+
+// TODO Add Visual styles (end)
+
+// TODO Refactor, tidy up code, add comments and split into files.
+
 // CONSTANTS
 
 // For default state -> Session Mode
@@ -102,7 +114,7 @@ class Timer extends React.Component {
         <h1 className="title">Pomodoro Timer</h1>
         <div id="timer-label">
           <h2>{this.state.mode.toUpperCase()}</h2>
-          <p id="time-length">{this.toClockFormat()}</p>
+          <p id="time-left">{this.toClockFormat()}</p>
         </div>
         <SetLengths
           breakLength={this.state.breakLength}
