@@ -1,13 +1,12 @@
 import React from "react";
 import "./pomodoro.scss";
 
-// TODO Add timer countdown features
-// - Find a way for when the play/pause button is clicked it will start counting down from the amount of seconds left. Use Date module.
-
 // TODO Add break feature
-// - When timer hits 1:00 it should have a "flashing" style
+// - When timer hits 1:00 the
 // - When timer hits 00:00 switch mode from session to break which lasts the set break length amount of time (convert from mins -> secs)
-// Play beeping sounds at the appropriate times
+
+// TODO Cycle between break and session modes
+// - Beep at 00:00 for both
 
 // TODO Add Visual styles (end)
 
@@ -45,31 +44,22 @@ class Timer extends React.Component {
       secondsLeft: DEFAULT.secondsLeft,
     };
     // Binding Statements
-    this.countdown = this.countdown.bind(this);
+    this.playPause = this.playPause.bind(this);
     this.handleSetLength = this.handleSetLength.bind(this);
     this.reset = this.reset.bind(this);
+    this.start = this.start.bind(this);
+    this.stop = this.stop.bind(this);
     this.tick = this.tick.bind(this);
     this.toClockFormat = this.toClockFormat.bind(this);
   }
 
-  countdown() {
-    if (this.state.isRunning === true) return;
+  playPause() {
+    if (this.state.isRunning === true) {
+      this.stop();
+      return;
+    }
     this.setState({ isRunning: true });
-
-    let stopDistance =
-      1000 + new Date().getTime() + this.state.secondsLeft * 1000;
-
-    let interval = setInterval(() => {
-      if (this.state.isRunning) {
-        let distance = stopDistance - new Date().getTime();
-        if (distance > 0) this.tick();
-        else {
-          clearInterval(interval);
-        }
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
+    this.start();
   }
 
   handleSetLength(e) {
@@ -134,6 +124,27 @@ class Timer extends React.Component {
     return mins + ":" + secs;
   }
 
+  start() {
+    let stopDistance =
+      1000 + new Date().getTime() + this.state.secondsLeft * 1000;
+
+    let interval = setInterval(() => {
+      if (this.state.isRunning) {
+        let distance = stopDistance - new Date().getTime();
+        if (distance > 0) this.tick();
+        else {
+          clearInterval(interval);
+        }
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  stop() {
+    this.setState({ isRunning: false });
+  }
+
   render() {
     return (
       <div className="container">
@@ -149,7 +160,7 @@ class Timer extends React.Component {
         />
         <div className="row">
           <div className="row-block">
-            <button id="start_stop" onClick={this.countdown}>
+            <button id="start_stop" onClick={this.playPause}>
               Play/Pause
             </button>
           </div>
