@@ -13,6 +13,27 @@ $font: "Raleway", sans-serif;
   font-family: $font;
 }
 
+.title {
+  font-size: 3rem;
+}
+
+#timer-label {
+  border: 2px solid;
+  h2 {
+    font-size: 2.5rem;
+  }
+  #time-left {
+    font-size: 2rem;
+  }
+}
+
+.length-setted {
+  padding: 0 1rem;
+  width: 2rem;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -20,13 +41,10 @@ $font: "Raleway", sans-serif;
   padding: 1rem 0;
   .row-block {
     padding: 0 2rem;
+    .set-length-btn {
+      height: 3rem;
+      width: 6rem;
+      font-size: 1.375rem;
+    }
   }
-}
-
-#timer-label {
-  border: 2px solid;
-}
-
-.length-setted {
-  padding: 0 1rem;
 }

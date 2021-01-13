@@ -45,9 +45,24 @@ class Timer extends React.Component {
       secondsLeft: DEFAULT.secondsLeft,
     };
     // Binding Statements
+    this.countdown = this.countdown.bind(this);
     this.handleSetLength = this.handleSetLength.bind(this);
     this.reset = this.reset.bind(this);
+    this.tick = this.tick.bind(this);
     this.toClockFormat = this.toClockFormat.bind(this);
+  }
+
+  countdown() {
+    // Hacky way of doing it by adding 1000 to account for the first tick immediately rather than waiting 1 second for first tick.
+    let stopDistance =
+      1000 + new Date().getTime() + this.state.secondsLeft * 1000;
+    console.log(stopDistance);
+    let interval = setInterval(() => {
+      let distance = stopDistance - new Date().getTime();
+      console.log(distance); // Should decrease by 1 every time
+      if (distance > 0) this.tick();
+      else clearInterval(interval);
+    }, 1000);
   }
 
   handleSetLength(e) {
@@ -97,6 +112,10 @@ class Timer extends React.Component {
     });
   }
 
+  tick() {
+    this.setState({ secondsLeft: this.state.secondsLeft - 1 });
+  }
+
   toClockFormat() {
     const totalSeconds = this.state.secondsLeft;
     let mins = Math.floor(totalSeconds / 60);
@@ -123,7 +142,9 @@ class Timer extends React.Component {
         />
         <div className="row">
           <div className="row-block">
-            <button id="start_stop">Play/Pause</button>
+            <button id="start_stop" onClick={this.countdown}>
+              Play/Pause
+            </button>
           </div>
           <div className="row-block">
             <button id="reset" onClick={this.reset}>
@@ -146,6 +167,7 @@ const SetLengths = (props) => {
             id="break-decrement"
             value="decrease"
             onClick={props.handleSetLength}
+            className="set-length-btn"
           >
             Down
           </button>
@@ -156,6 +178,7 @@ const SetLengths = (props) => {
             id="break-increment"
             value="increase"
             onClick={props.handleSetLength}
+            className="set-length-btn"
           >
             Up
           </button>
@@ -168,6 +191,7 @@ const SetLengths = (props) => {
             id="session-decrement"
             value="decrease"
             onClick={props.handleSetLength}
+            className="set-length-btn"
           >
             Down
           </button>
@@ -178,6 +202,7 @@ const SetLengths = (props) => {
             id="session-increment"
             value="increase"
             onClick={props.handleSetLength}
+            className="set-length-btn"
           >
             Up
           </button>
