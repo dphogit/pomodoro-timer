@@ -53,15 +53,22 @@ class Timer extends React.Component {
   }
 
   countdown() {
-    // Hacky way of doing it by adding 1000 to account for the first tick immediately rather than waiting 1 second for first tick.
+    if (this.state.isRunning === true) return;
+    this.setState({ isRunning: true });
+
     let stopDistance =
       1000 + new Date().getTime() + this.state.secondsLeft * 1000;
-    console.log(stopDistance);
+
     let interval = setInterval(() => {
-      let distance = stopDistance - new Date().getTime();
-      console.log(distance); // Should decrease by 1 every time
-      if (distance > 0) this.tick();
-      else clearInterval(interval);
+      if (this.state.isRunning) {
+        let distance = stopDistance - new Date().getTime();
+        if (distance > 0) this.tick();
+        else {
+          clearInterval(interval);
+        }
+      } else {
+        clearInterval(interval);
+      }
     }, 1000);
   }
 
