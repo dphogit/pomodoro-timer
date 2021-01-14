@@ -1,10 +1,6 @@
 import React from "react";
 import "./pomodoro.scss";
 
-// TODO Add break feature
-// - When timer hits 1:00 the
-// - When timer hits 00:00 switch mode from session to break which lasts the set break length amount of time (convert from mins -> secs)
-
 // TODO Cycle between break and session modes
 // - Beep at 00:00 for both
 
@@ -44,6 +40,7 @@ class Timer extends React.Component {
       secondsLeft: DEFAULT.secondsLeft,
     };
     // Binding Statements
+    // this.beep = this.beep.bind(this);
     this.playPause = this.playPause.bind(this);
     this.handleSetLength = this.handleSetLength.bind(this);
     this.reset = this.reset.bind(this);
@@ -51,6 +48,7 @@ class Timer extends React.Component {
     this.stop = this.stop.bind(this);
     this.tick = this.tick.bind(this);
     this.toClockFormat = this.toClockFormat.bind(this);
+    this.transition = this.transition.bind(this);
   }
 
   playPause() {
@@ -131,8 +129,11 @@ class Timer extends React.Component {
     let interval = setInterval(() => {
       if (this.state.isRunning) {
         let distance = stopDistance - new Date().getTime();
+        console.log(distance);
         if (distance > 0) this.tick();
         else {
+          console.log("Switch Mode");
+          this.transition();
           clearInterval(interval);
         }
       } else {
@@ -143,6 +144,22 @@ class Timer extends React.Component {
 
   stop() {
     this.setState({ isRunning: false });
+  }
+
+  transition() {
+    let newMode, length;
+    if (this.state.mode === "session") {
+      newMode = "break";
+      length = this.state.breakLength;
+    } else {
+      newMode = "session";
+      length = this.state.sessionLength;
+    }
+    this.setState({
+      secondsLeft: length * 60,
+      mode: newMode,
+    });
+    this.start();
   }
 
   render() {
