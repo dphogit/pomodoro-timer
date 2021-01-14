@@ -1,9 +1,6 @@
 import React from "react";
 import "./pomodoro.scss";
 
-// TODO Cycle between break and session modes
-// - Beep at 00:00 for both
-
 // TODO Add Visual styles (end)
 
 // TODO Refactor, tidy up code, add comments and split into files.
@@ -40,7 +37,7 @@ class Timer extends React.Component {
       secondsLeft: DEFAULT.secondsLeft,
     };
     // Binding Statements
-    // this.beep = this.beep.bind(this);
+    this.beep = this.beep.bind(this);
     this.playPause = this.playPause.bind(this);
     this.handleSetLength = this.handleSetLength.bind(this);
     this.reset = this.reset.bind(this);
@@ -49,6 +46,12 @@ class Timer extends React.Component {
     this.tick = this.tick.bind(this);
     this.toClockFormat = this.toClockFormat.bind(this);
     this.transition = this.transition.bind(this);
+  }
+
+  // Credit to Peter Weinburg for the audio beep implementation
+  // https://codepen.io/freeCodeCamp/details/XpKrrW
+  beep() {
+    this.audioBeep.play();
   }
 
   playPause() {
@@ -105,6 +108,8 @@ class Timer extends React.Component {
       mode: DEFAULT.mode,
       secondsLeft: DEFAULT.secondsLeft,
     });
+    this.audioBeep.pause();
+    this.audioBeep.currentTime = 0;
   }
 
   tick() {
@@ -119,23 +124,17 @@ class Timer extends React.Component {
     mins = mins < 10 ? "0" + mins : mins;
     secs = secs < 10 ? "0" + secs : secs;
 
+    console.log(mins + ":" + secs);
     return mins + ":" + secs;
   }
 
   start() {
-    let stopDistance =
-      1000 + new Date().getTime() + this.state.secondsLeft * 1000;
-
     let interval = setInterval(() => {
       if (this.state.isRunning) {
-        let distance = stopDistance - new Date().getTime();
-        console.log(distance);
-        if (distance > 0) this.tick();
-        else {
-          console.log("Switch Mode");
+        if (document.getElementById("time-left").innerHTML === "00:00") {
           this.transition();
           clearInterval(interval);
-        }
+        } else this.tick();
       } else {
         clearInterval(interval);
       }
@@ -159,6 +158,7 @@ class Timer extends React.Component {
       secondsLeft: length * 60,
       mode: newMode,
     });
+    this.beep();
     this.start();
   }
 
@@ -187,6 +187,14 @@ class Timer extends React.Component {
             </button>
           </div>
         </div>
+        <audio
+          id="beep"
+          preload="auto"
+          ref={(audio) => {
+            this.audioBeep = audio;
+          }}
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+        ></audio>
       </div>
     );
   }
