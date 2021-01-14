@@ -1,7 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./pomodoro";
 import reportWebVitals from "./reportWebVitals";
+
+import App from "./components/app";
+import "./index.scss";
+
+// TODO Add styles
+// TODO Add comments
 
 ReactDOM.render(
   <React.StrictMode>

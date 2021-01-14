@@ -1,29 +1,13 @@
 import React from "react";
-import "./pomodoro.scss";
+import SetLengths from "./setLengths";
 
-// TODO Add Visual styles (end)
-
-// TODO Refactor, tidy up code, add comments and split into files.
-
-// CONSTANTS
-
-// For default state -> Session Mode
+// CONSTANTS - For default state -> Session Mode
 const DEFAULT = {
   breakLength: 5,
   sessionLength: 25,
   isRunning: false,
   mode: "session",
   secondsLeft: 1500,
-};
-
-// COMPONENTS
-
-const App = () => {
-  return (
-    <div className="App">
-      <Timer />
-    </div>
-  );
 };
 
 class Timer extends React.Component {
@@ -200,59 +184,4 @@ class Timer extends React.Component {
   }
 }
 
-const SetLengths = (props) => {
-  return (
-    <div className="row">
-      <div className="row-block">
-        <h2 id="break-label">Break Length</h2>
-        <div className="row">
-          <button
-            id="break-decrement"
-            value="decrease"
-            onClick={props.handleSetLength}
-            className="set-length-btn"
-          >
-            Down
-          </button>
-          <p id="break-length" className="length-setted">
-            {props.breakLength}
-          </p>
-          <button
-            id="break-increment"
-            value="increase"
-            onClick={props.handleSetLength}
-            className="set-length-btn"
-          >
-            Up
-          </button>
-        </div>
-      </div>
-      <div className="row-block">
-        <h2 id="session-label">Session Length</h2>
-        <div className="row">
-          <button
-            id="session-decrement"
-            value="decrease"
-            onClick={props.handleSetLength}
-            className="set-length-btn"
-          >
-            Down
-          </button>
-          <p id="session-length" className="length-setted">
-            {props.sessionLength}
-          </p>
-          <button
-            id="session-increment"
-            value="increase"
-            onClick={props.handleSetLength}
-            className="set-length-btn"
-          >
-            Up
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default App;
+export default Timer;
